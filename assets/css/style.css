@@ -1,0 +1,551 @@
+/* ==========================================================================
+   Lyonel Coffee – stylesheet
+   Sits on top of Bootstrap 5.3. Table of contents:
+   1. Design tokens        5. Categories (Home)
+   2. Base                 6. Best seller + product cards
+   3. Navbar               7. Promo banners
+   4. Hero                 8. Menu tabs
+                           9. Modal · 10. Footer
+   ========================================================================== */
+
+/* 1. Design tokens ------------------------------------------------------ */
+:root {
+  /* Colour – sampled from the Canva references */
+  --lc-tan: #b7966b;          /* page background */
+  --lc-roast: #0f0600;        /* hero / dark photo tone */
+  --lc-espresso: #170504;     /* footer */
+  --lc-brown: #554536;        /* active tab, icon glyphs */
+  --lc-slate: #b2bac2;        /* inactive tab */
+  --lc-gold: #c9a063;         /* hero accent line */
+  --lc-white: #fff;
+  --lc-ink: #000;
+
+  /* Typography – swap any family here and it updates site-wide */
+  --font-slab: "Bitter", Georgia, serif;                         /* hero headline */
+  --font-ui: "Josefin Sans", system-ui, sans-serif;              /* UI, prices, buttons */
+  --font-text: "Raleway", system-ui, sans-serif;                 /* descriptions */
+  --font-product: "Archivo Black", "Arial Black", sans-serif;    /* product names */
+  --font-display: "Chelsea Market", Georgia, serif;              /* "Best Seller" */
+  --font-promo: "Abril Fatface", Georgia, serif;                 /* "Gebyar Promo" */
+
+  /* Shape & spacing */
+  --radius-lg: 1.75rem;
+  --radius-md: 1.25rem;
+  --radius-sm: 0.4rem;
+  --section-space: clamp(2rem, 5vw, 4rem);
+
+  /* Bootstrap overrides */
+  --bs-body-font-family: var(--font-ui);
+  --bs-body-bg: var(--lc-tan);
+  --bs-body-color: var(--lc-ink);
+  --bs-border-radius: var(--radius-sm);
+}
+
+/* 2. Base --------------------------------------------------------------- */
+html { scroll-padding-top: 1rem; }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+main { flex: 1 0 auto; }
+
+img { max-width: 100%; height: auto; }
+
+:focus-visible {
+  outline: 3px solid var(--lc-white);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--lc-ink);
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 2000;
+  padding: 0.5rem 1rem;
+  background: var(--lc-white);
+  color: var(--lc-ink);
+  border-radius: var(--radius-sm);
+}
+.skip-link:focus { top: 1rem; }
+
+.section { padding-block: var(--section-space); }
+
+.section-title {
+  margin: 0 0 1.5rem;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lc-white);
+}
+
+.price {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* The black "+" button used on every product card.
+   The ::after enlarges the tap target to ~44px. */
+.btn-add {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--lc-ink);
+  color: var(--lc-white);
+  font-size: 1rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.btn-add::after { content: ""; position: absolute; inset: -0.5rem; }
+.btn-add:hover { background: var(--lc-brown); transform: scale(1.1); }
+
+/* 3. Navbar (sits over the hero image) ---------------------------------- */
+.site-nav {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 10;
+  padding-block: 0.9rem;
+}
+.site-nav .navbar-brand { padding: 0; }
+.site-nav__logo { display: block; width: 10.5rem; height: auto; }
+
+.site-nav .navbar-toggler {
+  border: 0;
+  padding: 0.35rem 0.5rem;
+  color: var(--lc-white);
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+/* Mobile menu panel */
+.site-nav .navbar-collapse {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(23, 5, 4, 0.94);
+}
+.site-nav .nav-link {
+  padding: 0.7rem 0;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.85);
+}
+.site-nav .nav-link:hover,
+.site-nav .nav-link[aria-current="page"] { color: var(--lc-gold); }
+
+/* White pill button used in the hero and navbar */
+.btn-lyonel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.1rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: var(--lc-white);
+  color: var(--lc-ink);
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.btn-lyonel i { transition: transform 0.2s ease; }
+.btn-lyonel:hover { background: var(--lc-gold); color: var(--lc-ink); }
+.btn-lyonel:hover i { transform: translateX(3px); }
+
+@media (min-width: 992px) {
+  .site-nav { padding-block: 1.5rem; }
+  .site-nav__logo { width: 13rem; }
+  .site-nav .navbar-collapse {
+    margin-top: 0;
+    padding: 0;
+    background: none;
+  }
+  .site-nav .nav-link { padding: 0.5rem 1rem; }
+  .site-nav .btn-lyonel { padding: 0.5rem 1.1rem; font-size: 0.95rem; }
+}
+
+/* 4. Hero --------------------------------------------------------------- */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 17.5rem;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  background: var(--lc-roast);
+  color: var(--lc-white);
+}
+.hero__media { position: absolute; inset: 0; z-index: -1; }
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 32% center;
+}
+/* keeps white text readable over the left side of the photo */
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(15, 6, 0, 0.7) 0%, rgba(15, 6, 0, 0) 68%);
+}
+
+.hero__body {
+  padding-top: 5.75rem;
+  padding-bottom: 3rem;
+}
+.hero__lead {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  text-indent: 2.4rem;
+}
+.hero__title {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-slab);
+  font-weight: 600;
+  font-size: clamp(1.15rem, 5.4vw, 1.5rem);
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+}
+.hero__title span { display: block; }
+.hero__title .is-accent { color: var(--lc-gold); }
+
+.hero__tagline {
+  position: absolute;
+  inset: auto 0 0.7rem 0;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-slab);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Menu page: shorter hero with a large "Menu" heading */
+.hero--compact .hero__body { padding-top: 6rem; padding-bottom: 3.25rem; }
+.hero--compact h1 {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 11vw, 3.25rem);
+  line-height: 1;
+}
+.hero--compact p.hero__text {
+  max-width: 14rem;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+/* One orchestrated entrance: hero text only */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__body > * { animation: hero-in 0.7s ease-out both; }
+  .hero__body > :nth-child(2) { animation-delay: 0.08s; }
+  .hero__body > :nth-child(3) { animation-delay: 0.16s; }
+  @keyframes hero-in {
+    from { opacity: 0; transform: translateY(0.75rem); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* Desktop: the supplied photo is only 366px wide, so it is shown in a
+   limited panel on the right (fading into the dark hero) instead of being
+   stretched across the whole screen. */
+@media (min-width: 992px) {
+  .hero { min-height: 33rem; border-radius: 0 0 2.5rem 2.5rem; }
+  .hero--compact { min-height: 24rem; }
+  .hero__media {
+    inset: 0 0 0 auto;
+    width: min(54%, 48rem);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 38%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 38%);
+  }
+  .hero__media::after { display: none; }
+  .hero__media img { object-position: 70% center; }
+  .hero__body { padding-top: 10.5rem; padding-bottom: 5rem; }
+  .hero--compact .hero__body { padding-top: 9rem; padding-bottom: 4rem; }
+  .hero__title { font-size: 2.4rem; margin-bottom: 2rem; }
+  .hero__lead { font-size: 1.25rem; text-indent: 0; }
+  .hero__tagline { font-size: 0.85rem; bottom: 1.25rem; }
+  .hero--compact h1 { font-size: 4.25rem; }
+  .hero--compact p.hero__text { max-width: 22rem; font-size: 1.15rem; }
+}
+
+/* 5. Categories (Home) -------------------------------------------------- */
+.category-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--lc-ink);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+.category-link__circle {
+  display: grid;
+  place-items: center;
+  width: 5.25rem;
+  height: 5.25rem;
+  border-radius: 50%;
+  background: var(--lc-white);
+  transition: transform 0.25s ease;
+}
+.category-link__circle img { height: 2.7rem; width: auto; }
+.category-link:hover .category-link__circle { transform: scale(1.06); }
+.category-link:hover { color: var(--lc-ink); }
+
+@media (min-width: 992px) {
+  .category-link__circle { width: 7.5rem; height: 7.5rem; }
+  .category-link__circle img { height: 3.9rem; }
+  .category-link { font-size: 1.05rem; }
+}
+
+/* 6. Best seller + product cards ---------------------------------------- */
+.feature-card {
+  overflow: hidden;
+  height: 100%;
+  border-radius: var(--radius-lg);
+  background: var(--lc-white);
+}
+@media (min-width: 768px) {
+  /* source photos are ~100px wide: cap the card so they are not over-stretched */
+  .feature-card { width: 12.5rem; }
+}
+.feature-card__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 97 / 112;
+  object-fit: cover;
+}
+.feature-card__body { padding: 0.65rem 0.9rem 0.9rem; }
+.feature-card__name {
+  margin: 0 0 0.4rem;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+.feature-card__row,
+.product-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  color: var(--lc-ink);
+  text-decoration: none;
+}
+.link-more:hover { text-decoration: underline; text-underline-offset: 0.3em; }
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.9rem 1rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--lc-white);
+}
+.product-card__img {
+  display: block;
+  width: 100%;
+  height: 6.5rem;
+  margin-bottom: 0.75rem;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+.product-card:hover .product-card__img { transform: scale(1.05); }
+.product-card__name {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-product);
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+.product-card__desc {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-text);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #222;
+}
+.product-card__row { margin-top: auto; }
+
+@media (min-width: 992px) {
+  .product-card { padding: 1.1rem 1.25rem 1.25rem; }
+  .product-card__img { height: 7.5rem; }
+  .product-card__name { font-size: 1.05rem; }
+  .product-card__desc { font-size: 0.82rem; }
+  .price { font-size: 1rem; }
+}
+
+/* 7. Promo banners ------------------------------------------------------ */
+.promo-wrap { position: relative; container-type: inline-size; }
+.promo {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 288 / 161;
+  border-radius: var(--radius-md);
+  background: var(--lc-roast);
+  color: var(--lc-white);
+}
+.promo__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.promo__head {
+  position: absolute;
+  top: 6cqi;
+  left: 5cqi;
+  display: flex;
+  align-items: center;
+  gap: 2.5cqi;
+  font-size: clamp(0.7rem, 3.6cqi, 1.1rem);
+  letter-spacing: 0.02em;
+}
+.promo__head h3 { margin: 0; font: inherit; text-transform: uppercase; }
+.promo__badge {
+  display: grid;
+  place-items: center;
+  width: 9cqi;
+  height: 9cqi;
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  border-radius: 50%;
+  background: var(--lc-white);
+  color: var(--lc-ink);
+  font-size: 1.1em;
+}
+.promo__text {
+  position: absolute;
+  top: 50%;
+  right: 3cqi;
+  width: 36cqi;
+  margin: 0;
+  transform: translateY(-50%);
+  text-align: center;
+  font-size: clamp(0.62rem, 3cqi, 0.95rem);
+  font-weight: 300;
+  line-height: 1.55;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+/* mirrored variant (second banner) */
+.promo--reverse .promo__head { left: auto; right: 5cqi; flex-direction: row-reverse; }
+.promo--reverse .promo__text { right: auto; left: 3cqi; }
+
+.promo-label {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  font-family: var(--font-promo);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 7cqi, 2.2rem);
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--lc-white);
+  pointer-events: none;
+}
+.promo-label--right { top: -1.6rem; right: 0.6rem; transform: rotate(10deg); transform-origin: right bottom; }
+.promo-label--left { top: -1.9rem; left: 0.4rem; transform: rotate(-14deg); transform-origin: left bottom; }
+
+/* 8. Menu tabs ---------------------------------------------------------- */
+.menu-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: 34rem;
+  margin-inline: auto;
+}
+.menu-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 2.9rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-sm);
+  background: var(--lc-slate);
+  color: #2b2b2b;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.menu-tab img { height: 1.6rem; width: auto; }
+.menu-tab .icon-light { display: none; }
+.menu-tab:hover { background: #c4cad1; }
+.menu-tab.is-active { background: var(--lc-brown); color: var(--lc-white); }
+.menu-tab.is-active:hover { background: var(--lc-brown); }
+.menu-tab.is-active .icon-dark { display: none; }
+.menu-tab.is-active .icon-light { display: block; }
+
+.menu-heading {
+  margin: 2rem 0 1rem;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 5vw, 2rem);
+}
+
+/* 9. Product modal ------------------------------------------------------ */
+.product-modal .modal-content { border: 0; border-radius: var(--radius-md); overflow: hidden; }
+.product-modal__image { display: block; margin: 0 auto 1rem; width: 9rem; height: 9rem; object-fit: contain; }
+.product-modal__category {
+  margin: 0 0 0.25rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--lc-brown);
+}
+.product-modal__name { font-family: var(--font-product); font-weight: 400; font-size: 1.35rem; }
+.product-modal__desc { font-family: var(--font-text); }
+.product-modal__price { font-size: 1.25rem; }
+
+/* 10. Footer ------------------------------------------------------------ */
+.site-footer {
+  margin-top: var(--section-space);
+  padding-block: 1.25rem 1.5rem;
+  background: var(--lc-espresso);
+  color: var(--lc-white);
+}
+.site-footer__logo { display: block; width: 10.5rem; height: auto; }
+.site-footer__hours { margin: 0; font-weight: 600; font-size: 0.9rem; line-height: 1.35; }
+.site-footer__copy { margin: 1.1rem 0 0.35rem; font-weight: 600; font-size: 0.85rem; }
+.site-footer__meta { margin: 0; font-size: 0.7rem; font-weight: 600; }
+.site-footer a { color: inherit; text-decoration: none; }
+.site-footer a:hover { color: var(--lc-gold); text-decoration: underline; text-underline-offset: 0.2em; }
+.site-footer__nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin: 1rem 0 0; padding: 0; list-style: none; font-size: 0.85rem; }
+
+@media (min-width: 992px) {
+  .site-footer { padding-block: 2rem; }
+  .site-footer__logo { width: 13rem; }
+  .site-footer__hours { font-size: 1rem; }
+  .site-footer__copy { font-size: 0.9rem; }
+  .site-footer__meta { font-size: 0.8rem; }
+}
